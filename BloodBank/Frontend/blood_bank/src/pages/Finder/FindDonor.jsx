@@ -60,8 +60,10 @@ const FindDonor = () => {
 
     if (validateFormData()) {
 
-      const donors = await axiosGet(`donor/finddonor/${formData.bloodgroup}/${formData.province}/${formData.district}`);
-      setDonorList(donors);
+      await axiosGet(`donor/finddonor/${formData.bloodgroup}/${formData.province}/${formData.district}`).
+        then(data => {
+          setDonorList(data.data);
+        })
     }
 
   }

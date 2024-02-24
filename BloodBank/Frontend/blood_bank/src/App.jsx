@@ -10,6 +10,7 @@ import Register from "./auth/Register";
 import Login from "./auth/Login";
 import RequestBlood from './pages/Finder/RequestBlood';
 import FindDonor from './pages/Finder/FindDonor';
+import Profile from './pages/Donar/Profile';
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
       <Routes>
 
 
-       
+
         <Route path='/' element={<Home />}></Route>
         <Route path='/about' element={<About />}></Route>
         <Route path='/news' element={<News />}></Route>
@@ -29,6 +30,7 @@ function App() {
         <Route path='/login' element={<Login />}></Route>
         <Route path='/requestblood' element={<RequestBlood />}></Route>
         <Route path='/finddonor' element={<FindDonor />}></Route>
+        <Route path='/profile' element={<Profile />}></Route>
 
       </Routes>
     </BrowserRouter>

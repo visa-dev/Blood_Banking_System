@@ -37,7 +37,7 @@ const Home = () => {
 
       .then(data => {
 
-        setCountBloodgroups(data);
+        setCountBloodgroups(data.data);
 
       })
       .catch(error => {
@@ -205,7 +205,7 @@ const Home = () => {
           <div className='w-[100px] h-[100px] border-2 m-[25px] flex justify-center items-center bg-slate-200' >
             <div className='w-14 h-14 rounded-full border border-gray-500 bg-white'>
               <center className='text-pink-600 font-bold '>AB+</center>
-              <center className='homepara text-[12px]'>2{countbloodgroups.ABp}</center>
+              <center className='homepara text-[12px]'>{countbloodgroups.ABp}</center>
             </div>
           </div>
           <div className='w-[100px] h-[100px] border-2 m-[25px] flex justify-center items-center bg-slate-200' >

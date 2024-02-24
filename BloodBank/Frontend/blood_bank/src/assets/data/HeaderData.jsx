@@ -24,45 +24,16 @@ const navLinks = [
 const donorNavLinks = [
     {
         path: '/',
-        display: 'donor1'
+        display: 'HOME'
 
     },
     {
-        path: '/',
-        display: 'donor2'
-
-    },
-    {
-        path: '/',
-        display: 'donor3'
-
-    },
-    {
-        path: '/',
-        display: 'donor4'
+        path: '/requests',
+        display: 'REQUESTS'
 
     }
+
+
+
 ]
-const finderNavLinks = [
-    {
-        path: '/',
-        display: 'finder1'
-
-    },
-    {
-        path: '/',
-        display: 'finder2'
-
-    },
-    {
-        path: '/',
-        display: 'finder3'
-
-    },
-    {
-        path: '/',
-        display: 'finder4'
-
-    }
-]
-export { navLinks, donorNavLinks, finderNavLinks }
+export { navLinks, donorNavLinks }
