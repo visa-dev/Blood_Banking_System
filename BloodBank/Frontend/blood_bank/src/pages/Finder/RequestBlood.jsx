@@ -26,7 +26,8 @@ const RequestBlood = () => {
     datewhenneed: '',
     province: 'Select',
     district: 'Select',
-    mobile: ''
+    mobile: '',
+    gender: 'Select'
 
   });
 
@@ -66,6 +67,9 @@ const RequestBlood = () => {
     if (formData.bloodgroup.trim() === "Select") {
       errors.bloodgroup = 'BloodGroup is required';
     }
+    if (formData.gender.trim() === "Select") {
+      errors.gender = 'Gender is required';
+    }
     if (!formData.hospitalname.trim()) {
       errors.hospitalname = 'Hospital name is required';
     }
@@ -91,11 +95,11 @@ const RequestBlood = () => {
       if (validateFormData()) {
         axiosPost('finder/bloodrequest', JSON.stringify(formData));
         alert("Succsessfully Requested");
-      } 
+      }
     } catch (error) {
       alert("Request Fail");
     }
-   
+
 
   }
 
@@ -154,6 +158,19 @@ const RequestBlood = () => {
             <option value="O+">O+</option>
           </select>
           {errors.bloodgroup && <span className="text-red-500">{errors.bloodgroup}</span>}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-[5px]">
+            Gender
+          </label>
+          <select name="gender" value={formData.gender} onChange={handleChnage} className='w-full h-[40px] bg-slate-100'>
+            <option value="Select">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+
+          </select>
+          {errors.gender && <span className="text-red-500">{errors.gender}</span>}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-[5px]">

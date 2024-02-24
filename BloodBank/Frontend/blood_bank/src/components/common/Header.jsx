@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { BiMenu } from 'react-icons/bi';
 import header_logo from '../../assets/images/header/header_logo.jpg';
@@ -12,6 +12,8 @@ const Header = (props) => {
 
     const headerRef = useRef(null);
     const menuRef = useRef(null);
+
+    const [blood, setBlood] = useState('');
 
     const handleStickyHeader = () => {
 
@@ -30,6 +32,7 @@ const Header = (props) => {
 
     useEffect(() => {
         //handleStickyHeader();
+        setBlood(props.blood);
         return () => window.removeEventListener('scroll', handleStickyHeader);
     });
 
@@ -44,6 +47,7 @@ const Header = (props) => {
                     <img className="w-20 h-20 bg-gray-200 border rounded-full" src={header_logo}></img>
 
                 </div>
+                <div>{blood}</div>
                 <div className='navigation ' ref={menuRef} onClick={toggleMenu} >
 
                     <ul className="menu flex gap-[2.7rem] ">
@@ -51,22 +55,29 @@ const Header = (props) => {
                         {
                             props.navLinks.map((link, index) =>
                                 <li key={index} >
-
-                                    <NavLink to={link.path} className={navClass => navClass.isActive ? 'text-primaryColor text-[16px] leading-7 font-[600]' : 'text-te text-[16px] leading-7 font-[500] hover:text-red-600'} >{link.display}</NavLink>
+                                    {!props.loged &&
+                                        <NavLink to={link.path} className={navClass => navClass.isActive ? 'text-primaryColor text-[16px] leading-7 font-[600]' : 'text-te text-[16px] leading-7 font-[500] hover:text-red-600'} >{link.display}</NavLink>
+                                    }
 
                                 </li>
                             )
                         }
                     </ul>
                 </div>
-                <div className='flex items-center gap-5'>
-                    <Stack >
-                        <Button variant="outlined" component={Link} to="/register" >Register</Button>
-                    </Stack>
-                    <Stack >
-                        <Button variant="outlined" color='error' component={Link} to="/login">Login</Button>
-                    </Stack>
-                </div>
+                {
+                    props.loged ? (<div className='flex items-center gap-5 '>
+                        <Stack >
+                            <Button variant="outlined" color='error' component={Link} to="/login">Logout</Button>
+                        </Stack></div>) : (<div className='flex items-center gap-5'>
+                            <Stack >
+                                <Button variant="outlined" component={Link} to="/register" >Register</Button>
+                            </Stack>
+                            <Stack >
+                                <Button variant="outlined" color='error' component={Link} to="/login">Login</Button>
+                            </Stack>
+                        </div>
+                    )
+                }
 
                 <div className='flex items-center gap-4'>
 
@@ -79,7 +90,7 @@ const Header = (props) => {
                 </div>
 
 
-                
+
 
             </div>
 

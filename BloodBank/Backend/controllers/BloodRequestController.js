@@ -4,7 +4,7 @@ import BloodRequest from "../models/BloodRequest.js";
 export const createBloodRequest = async (req, res) => {
 
     try {
-        
+
         const { patientname, email, mobile, othermsg, bloodgroup, gender, hospitalname, contactname, doctorname, datewhenneed, province, district, tandc } = req.body;
         const bloodRequest = new BloodRequest({
             patientname,
@@ -26,6 +26,21 @@ export const createBloodRequest = async (req, res) => {
         await bloodRequest.save();
 
         res.status(200).json({ success: true, message: 'Sucsessfully Data Added' });
+
+    } catch (error) {
+        res.status(400).json({ success: false, message: `Some Error Occured ${error.message}` });
+
+    }
+}
+
+export const requestsByBloodGroup = async (req, res) => {
+
+    try {
+        const filter = { bloodgroup: req.params.blood };
+
+        const requests = await BloodRequest.find(filter);
+   
+        res.status(200).json(requests);
 
     } catch (error) {
         res.status(400).json({ success: false, message: `Some Error Occured ${error.message}` });

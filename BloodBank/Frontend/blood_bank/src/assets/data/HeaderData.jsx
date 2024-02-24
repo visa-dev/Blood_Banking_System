@@ -22,16 +22,25 @@ const navLinks = [
 ]
 
 const donorNavLinks = [
-    {
-        path: '/',
-        display: 'HOME'
+    // {
+    //     path: '/profile',
+    //     display: 'PROFILE'
 
-    },
+    // },
     {
-        path: '/requests',
+        path: '/donor/requests',
         display: 'REQUESTS'
 
+    }, {
+        path: '/donor/donate',
+        display: 'DONATE'
+
+    }, {
+        path: '/donor/notifications',
+        display: 'NOTIFICATIONS'
+
     }
+    
 
 
 
