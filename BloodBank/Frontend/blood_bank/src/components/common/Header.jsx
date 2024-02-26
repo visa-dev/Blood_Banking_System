@@ -55,7 +55,7 @@ const Header = (props) => {
                         {
                             props.navLinks.map((link, index) =>
                                 <li key={index} >
-                                    {!props.loged &&
+                                    {!props.donorloged &&
                                         <NavLink to={link.path} className={navClass => navClass.isActive ? 'text-primaryColor text-[16px] leading-7 font-[600]' : 'text-te text-[16px] leading-7 font-[500] hover:text-red-600'} >{link.display}</NavLink>
                                     }
 
@@ -65,31 +65,35 @@ const Header = (props) => {
                     </ul>
                 </div>
                 {
-                    props.loged ? (<div className='flex items-center gap-5 '>
+                    props.donorloged ? (<div className='flex items-center gap-5 '>
                         <Stack >
                             <Button variant="outlined" color='error' component={Link} to="/login">Logout</Button>
-                        </Stack></div>) : (<div className='flex items-center gap-5'>
-                            <Stack >
-                                <Button variant="outlined" component={Link} to="/register" >Register</Button>
-                            </Stack>
-                            <Stack >
-                                <Button variant="outlined" color='error' component={Link} to="/login">Login</Button>
-                            </Stack>
-                        </div>
+                        </Stack>
+
+                    </div>) : (<div className='flex items-center gap-5'>
+                        <Stack >
+                            <Button variant="outlined" component={Link} to="/register" >Register</Button>
+                        </Stack>
+                        <Stack >
+                            <Button variant="outlined" color='error' component={Link} to="/login">Login</Button>
+                        </Stack>
+                        <Stack >
+                            <Button variant="outlined" color='error' component={Link} to="/admin/login">Admin</Button>
+                        </Stack>
+                    </div>
                     )
                 }
+
 
                 <div className='flex items-center gap-4'>
 
                     <span className='md:hidden' onClick={toggleMenu}>
-                        <BiMenu className='w-6 h-6 cursor-pointer' />
+                        {<BiMenu className='w-6 h-6 cursor-pointer' />}
 
                     </span>
 
 
                 </div>
-
-
 
 
             </div>

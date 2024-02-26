@@ -22,27 +22,38 @@ const navLinks = [
 ]
 
 const donorNavLinks = [
-    // {
-    //     path: '/profile',
-    //     display: 'PROFILE'
-
-    // },
+    
     {
         path: '/donor/requests',
         display: 'REQUESTS'
 
-    }, {
-        path: '/donor/donate',
-        display: 'DONATE'
-
-    }, {
+    },
+    {
         path: '/donor/notifications',
         display: 'NOTIFICATIONS'
 
     }
-    
-
-
 
 ]
-export { navLinks, donorNavLinks }
+
+const adminNavLinks = [
+
+    {
+        path: '/admin/bloodbank',
+        display: 'BLOOD BANK'
+
+    },
+    {
+        path: '/admin/donors',
+        display: 'DONORS'
+
+    },
+    {
+        path: '/admin/requests',
+        display: 'REQUESTS'
+
+    }
+
+]
+
+export { navLinks, donorNavLinks, adminNavLinks }

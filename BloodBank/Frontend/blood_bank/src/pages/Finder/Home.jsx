@@ -29,7 +29,7 @@ import { axiosGet } from '../../AxiosOperations';
 
 const Home = () => {
 
-  const [countbloodgroups, setCountBloodgroups] = React.useState('');
+  const [bloodCount, setBloodCount] = React.useState([]);
 
   useEffect(() => {
 
@@ -37,7 +37,7 @@ const Home = () => {
 
       .then(data => {
 
-        setCountBloodgroups(data.data);
+        setBloodCount(data.data);
 
       })
       .catch(error => {
@@ -54,7 +54,7 @@ const Home = () => {
   return (
     <div>
       <div>
-        <Header navLinks={navLinks} />
+        <Header navLinks={navLinks}  />
       </div>
       <div className='flex justify-evenly  bg-slate-100 p-[20px] '>
         <div className='mt-[50px] w-[750px] p-[20px] '>
@@ -189,55 +189,18 @@ const Home = () => {
       <hr class="border-b-2 border-pink-600  m-[25px]" />
       <div className='flex justify-center'>
         <div className='grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-2  p-[20px]'>
+          {
+            bloodCount.map((item) =>
+              <div className='w-[100px] h-[100px] border-2 m-[25px] flex justify-center items-center bg-slate-200' >
+                <div className='w-14 h-14 rounded-full border border-gray-500 bg-white'>
+                  <center className='text-pink-600 font-bold '>{item.type}</center>
+                  <center className='homepara text-[12px]'>{item.count}</center>
+                </div>
+              </div>
 
-          <div className='w-[100px] h-[100px] border-2 m-[25px] flex justify-center items-center bg-slate-200' >
-            <div className='w-14 h-14 rounded-full border border-gray-500 bg-white'>
-              <center className='text-pink-600 font-bold '>A-</center>
-              <center className='homepara text-[12px]'>{countbloodgroups.An}</center>
-            </div>
-          </div>
-          <div className='w-[100px] h-[100px] border-2 m-[25px] flex justify-center items-center bg-slate-200' >
-            <div className='w-14 h-14 rounded-full border border-gray-500 bg-white'>
-              <center className='text-pink-600 font-bold '>A+</center>
-              <center className='homepara text-[12px]'>{countbloodgroups.Ap}</center>
-            </div>
-          </div>
-          <div className='w-[100px] h-[100px] border-2 m-[25px] flex justify-center items-center bg-slate-200' >
-            <div className='w-14 h-14 rounded-full border border-gray-500 bg-white'>
-              <center className='text-pink-600 font-bold '>AB+</center>
-              <center className='homepara text-[12px]'>{countbloodgroups.ABp}</center>
-            </div>
-          </div>
-          <div className='w-[100px] h-[100px] border-2 m-[25px] flex justify-center items-center bg-slate-200' >
-            <div className='w-14 h-14 rounded-full border border-gray-500 bg-white'>
-              <center className='text-pink-600 font-bold '>AB-</center>
-              <center className='homepara text-[12px]'>{countbloodgroups.ABn}</center>
-            </div>
-          </div>
-          <div className='w-[100px] h-[100px] border-2 m-[25px] flex justify-center items-center bg-slate-200' >
-            <div className='w-14 h-14 rounded-full border border-gray-500 bg-white'>
-              <center className='text-pink-600 font-bold '>B-</center>
-              <center className='homepara text-[12px]'>{countbloodgroups.Bn}</center>
-            </div>
-          </div>
-          <div className='w-[100px] h-[100px] border-2 m-[25px] flex justify-center items-center bg-slate-200' >
-            <div className='w-14 h-14 rounded-full border border-gray-500 bg-white'>
-              <center className='text-pink-600 font-bold '>B+</center>
-              <center className='homepara text-[12px]'>{countbloodgroups.Bp}</center>
-            </div>
-          </div>
-          <div className='w-[100px] h-[100px] border-2 m-[25px] flex justify-center items-center bg-slate-200' >
-            <div className='w-14 h-14 rounded-full border border-gray-500 bg-white'>
-              <center className='text-pink-600 font-bold '>O-</center>
-              <center className='homepara text-[12px]'>{countbloodgroups.On}</center>
-            </div>
-          </div>
-          <div className='w-[100px] h-[100px] border-2 m-[25px] flex justify-center items-center bg-slate-200' >
-            <div className='w-14 h-14 rounded-full border border-gray-500 bg-white'>
-              <center className='text-pink-600 font-bold '>O+</center>
-              <center className='homepara text-[12px]'>{countbloodgroups.Op}</center>
-            </div>
-          </div>
+            )
+          }
+
         </div>
       </div>
       <hr class="border-b-2 border-pink-600  m-[25px]" />

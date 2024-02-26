@@ -15,7 +15,7 @@ import Stack from '@mui/material/Stack';
 const Profile = () => {
 
 
-  const [profile, setProfile] = useState('');
+  const [profile, setProfile] = useState([]);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -46,17 +46,17 @@ const Profile = () => {
   return (
     <div >
       <div>
-        <Header navLinks={donorNavLinks} loged={true} />
+        {<Header navLinks={donorNavLinks} donorloged={true} />}
       </div>
       <div className='flex justify-center gap-4 p-[20px] bg-gray-800'>
-        <div className='grid lg:grid-cols-3 md:grid-cols-2 gap-10 '>
+        <div className='grid lg:grid-cols-2 md:grid-cols-2 gap-10 '>
 
           {
             donorNavLinks.map((item) =>
               <Stack direction="col" spacing={2}>
                 {
-                  item.display === "REQUESTS" ? (<Button className='w-[250px] h-[50px]' variant="outlined" component={Link} to={`/donor/requests?blood=${encodeURIComponent(profile.bloodgroup)}`} >{item.display}</Button>) 
-                  : (<Button className='w-[250px] h-[50px]' variant="outlined" component={Link} to={item.path} >{item.display}</Button>)
+                  item.display === "REQUESTS" ? (<Button className='w-[250px] h-[50px]' variant="outlined" component={Link} to={`/donor/requests?blood=${encodeURIComponent(profile.bloodgroup)}`} >{item.display}</Button>)
+                    : (<Button className='w-[250px] h-[50px]' variant="outlined" component={Link} to={`/donor/notifications?id=${encodeURIComponent(profile._id)}`} >{item.display}</Button>)
                 }
 
               </Stack>

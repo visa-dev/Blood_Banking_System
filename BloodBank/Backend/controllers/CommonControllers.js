@@ -13,8 +13,9 @@ export const countOfDonors = async (req, res) => {
         const ABpositive = await Donor.countDocuments({ bloodgroup: "AB+" });
         const ABnegative = await Donor.countDocuments({ bloodgroup: "AB-" });
 
-        
-        res.status(200).json({ Ap: Apositive, An: Anegative, Bp: Bpositive, Bn: Bnegative, Op: Opositive, On: Onegative, ABp: ABpositive, ABn: ABnegative });
+        const obj = [{ type: "A+", count: Apositive }, { type: "A-", count: Anegative }, { type: "B+", count: Bpositive }, { type: "B-", count: Bnegative }, { type: "O+", count: Opositive }, { type: "O-", count: Onegative }, { type: "AB+", count: ABpositive }, { type: "AB-", count: ABnegative }];
+
+        res.status(200).json(obj);
 
     } catch (error) {
         res.status(400).json({ success: false, message: `Some Error Occured ${error.message}` });

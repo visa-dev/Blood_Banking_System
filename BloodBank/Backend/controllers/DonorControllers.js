@@ -1,4 +1,6 @@
 import Donor from "../models/Donor.js";
+import Notification from "../models/Notification.js";
+
 import bcrypt from 'bcrypt';
 
 
@@ -53,6 +55,19 @@ export const getDonors = async (req, res) => {
     }
 }
 
+export const getAllDonors = async (req, res) => {
+
+     try {
+
+        const donors = await Donor.find();
+        res.status(200).json(donors);
+
+    } catch (error) {
+        res.status(400).json({ success: false, message: `Some Error Occured ${error.message}` });
+
+    }
+}
+
 export const login = async (req, res) => {
 
     const filter = { email: req.body.email }
@@ -86,6 +101,46 @@ export const findById = async (req, res) => {
         const donor = await Donor.findById(req.params.id);
 
         res.status(200).json(donor);
+
+    } catch (error) {
+        res.status(400).json({ success: false, message: `Some Error Occured ${error.message}` });
+
+    }
+}
+
+export const getNotifications = async (req, res) => {
+
+    try {
+
+        const notifications = await Notification.find({ reciver_id: req.params.id });
+
+        res.status(200).json(notifications);
+
+
+    } catch (error) {
+        res.status(400).json({ success: false, message: `Some Error Occured ${error.message}` });
+
+    }
+}
+
+export const setNotifications = async (req, res) => {
+
+    const { reciver_id, message, sendername, subject } = req.body;
+
+
+    try {
+
+        const notification = new Notification({
+            reciver_id,
+            message,
+            sendername,
+            subject
+        });
+
+
+        await notification.save();
+
+        res.status(200).json({ success: true, message: 'Sucsessfully Data Added' });
 
     } catch (error) {
         res.status(400).json({ success: false, message: `Some Error Occured ${error.message}` });

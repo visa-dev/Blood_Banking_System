@@ -11,10 +11,13 @@ import Login from "./auth/Login";
 import RequestBlood from './pages/Finder/RequestBlood';
 import FindDonor from './pages/Finder/FindDonor';
 import Profile from './pages/Donar/Profile';
-import Donate from './pages/Donar/Donate';
+
 import Requests from './pages/Donar/Requests';
 import Notifications from './pages/Donar/Notifications';
-
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import Donor from './pages/Admin/Donor';
+import BloodBank from './pages/Admin/BloodBank';
+import AllRequests from './pages/Admin/AllRequests';
 
 function App() {
 
@@ -36,10 +39,14 @@ function App() {
         <Route path='/profile' element={<Profile />}></Route>
 
 
-        <Route path='/donor/donate' element={<Donate />}></Route>
+        
         <Route path='/donor/requests' element={<Requests />}></Route>
         <Route path='/donor/notifications' element={<Notifications />}></Route>
 
+        <Route path='/admin/login' element={<AdminDashboard />}></Route>
+        <Route path='/admin/donors' element={<Donor />}></Route>
+        <Route path='/admin/bloodbank' element={<BloodBank />}></Route>
+        <Route path='/admin/requests' element={<AllRequests />}></Route>
       </Routes>
     </BrowserRouter>
   )

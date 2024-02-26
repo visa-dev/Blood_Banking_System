@@ -62,6 +62,12 @@ const Requests = () => {
       key: 'bloodgroup',
     },
     {
+      title: 'When Need',
+      dataIndex: 'datewhenneed',
+      key: 'datewhenneed',
+      render: (text) => <div style={{ color: 'red', fontWeight:'bold' }}>{text}</div>
+    },
+    {
       title: 'Hospital Name',
       dataIndex: 'hospitalname',
       key: 'hospitalname',
@@ -77,16 +83,17 @@ const Requests = () => {
       key: 'mobile',
     },
     {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+      render: (text) => <a href={`mailto:${text}`} style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>{text}</a>,
+    },
+    {
       title: 'District',
       dataIndex: 'district',
       key: 'district',
     }
-    ,
-    {
-      title: 'Province',
-      dataIndex: 'province',
-      key: 'province',
-    },
+
 
 
   ];
@@ -96,11 +103,11 @@ const Requests = () => {
   return (
     <div >
       <div>
-        <Header navLinks={donorNavLinks} loged={true} />
+        <Header navLinks={donorNavLinks} donorloged={true} />
       </div>
 
-      <div className="responsive-table flex justify-center pt-[30px] pb-[25px]">
-        <Table dataSource={[data][0]} columns={columns} />
+      <div className="responsive-table flex justify-center pt-[40px] pb-[40px] bg-slate-100 h-[70vh]">
+        <Table className='border-2 p-[30px]' dataSource={[data][0]} columns={columns} />
       </div>
 
       <div>
