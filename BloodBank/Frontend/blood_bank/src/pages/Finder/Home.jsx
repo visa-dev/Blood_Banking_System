@@ -27,6 +27,8 @@ import Select from '@mui/material/Select';
 
 import { axiosGet } from '../../AxiosOperations';
 
+import Spinner1 from '../../pages/spinners/Spinner1';
+
 const Home = () => {
 
   const [bloodCount, setBloodCount] = React.useState([]);
@@ -54,7 +56,7 @@ const Home = () => {
   return (
     <div>
       <div>
-        <Header navLinks={navLinks}  />
+        <Header navLinks={navLinks} />
       </div>
       <div className='flex justify-evenly  bg-slate-100 p-[20px] '>
         <div className='mt-[50px] w-[750px] p-[20px] '>
@@ -206,6 +208,7 @@ const Home = () => {
       <hr class="border-b-2 border-pink-600  m-[25px]" />
       <div className='mt-[10px]'>
         <Footer navLinks1={socialLinks} navLinks2={contactData} />
+       
       </div>
     </div>
   )

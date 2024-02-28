@@ -39,7 +39,7 @@ export const requestsByBloodGroup = async (req, res) => {
         const filter = { bloodgroup: req.params.blood };
 
         const requests = await BloodRequest.find(filter);
-   
+
         res.status(200).json(requests);
 
     } catch (error) {
@@ -47,3 +47,18 @@ export const requestsByBloodGroup = async (req, res) => {
 
     }
 }
+
+export const Allrequests = async (req, res) => {
+
+    try {
+
+        const requests = await BloodRequest.find();
+
+        res.status(200).json(requests);
+
+    } catch (error) {
+        res.status(400).json({ success: false, message: `Some Error Occured ${error.message}` });
+
+    }
+}
+

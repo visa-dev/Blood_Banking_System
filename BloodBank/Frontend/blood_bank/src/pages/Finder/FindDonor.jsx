@@ -8,10 +8,12 @@ import { socialLinks, contactData } from '../../assets/data/FooterData';
 import Chat from '../../popups/Chat';
 import { axiosGet } from '../../AxiosOperations';
 import testImg from '/user.png';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+
+import Spinner1 from '../../pages/spinners/Spinner1';
 
 const FindDonor = () => {
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(true);
   const [donorList, setDonorList] = useState([]);
   const [formData, setFormData] = useState({
     bloodgroup: 'Select',
@@ -22,6 +24,7 @@ const FindDonor = () => {
   const handleChnage = (e) => {
     const { value, name } = e.target;
     setFormData({ ...formData, [name]: value });
+   
   };
 
   const validateFormData = () => {
@@ -44,7 +47,9 @@ const FindDonor = () => {
       await axiosGet(`donor/finddonor/${formData.bloodgroup}/${formData.province}/${formData.district}`)
         .then(data => {
           setDonorList(data.data);
-        })
+        }).then(setInterval(() => {
+          setLoading(false);
+        }, 500))
         .then(() => {
           // Show chat after fetching donor list
           setChatVisible(true);
@@ -109,7 +114,7 @@ const FindDonor = () => {
       </div>
 
       {donorList.length !== 0 ? (
-        <div className='grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4'>
+        loading ? (<Spinner1 />) : (<div className='grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4'>
           {donorList.map(item => (
             <div className='flex justify-center p-[20px]' key={item._id}>
               <div className='xl:w-[500px] lg:w-[500px] md:w-[500px] h-[300px] border-2 bg-slate-200  '>
@@ -137,7 +142,8 @@ const FindDonor = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div>)
+
       ) : (
         <div className='flex justify-center w-full/2 h-[500px] items-center bg-slate-200 m-[20px] homepara'>No Available Donor/Not Select All Fields</div>
       )}
