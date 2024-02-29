@@ -11,7 +11,11 @@ import testImg from '/user.png';
 
 import Spinner1 from '../../pages/spinners/Spinner1';
 
+import Province from '../../assets/data/SelectData';
+
 const FindDonor = () => {
+
+  const [districts, setDistricts] = useState([]);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const [donorList, setDonorList] = useState([]);
@@ -24,8 +28,21 @@ const FindDonor = () => {
   const handleChnage = (e) => {
     const { value, name } = e.target;
     setFormData({ ...formData, [name]: value });
-   
+
   };
+
+  const getDistrcts = (e) => {
+
+    Province.map(pr => {
+      if (pr.name === e.target.value) {
+        setDistricts(pr.districts);
+      }
+    }
+    )
+
+  };
+
+
 
   const validateFormData = () => {
     const errors = {};
@@ -87,9 +104,15 @@ const FindDonor = () => {
               <label className="block text-sm font-medium text-gray-700 mb-[5px]">
                 Province
               </label>
-              <select name="province" onChange={handleChnage} className='w-full h-[40px] bg-slate-100'>
+              <select name="province" onChange={(e) => {
+                handleChnage(e); getDistrcts(e);
+              }} className='w-full h-[40px] bg-slate-100'>
                 <option value="Select">Select</option>
-                <option value="Sabaragamuwa">Sabaragamuwa</option>
+                {
+                  Province.map((province) =>
+                    <option value={province.name}>{province.name}</option>
+                  )
+                }
               </select>
               {errors.province && <span className="text-red-500">{errors.province}</span>}
             </div>
@@ -100,7 +123,13 @@ const FindDonor = () => {
               </label>
               <select name="district" onChange={handleChnage} className='w-full h-[40px] bg-slate-100'>
                 <option value="Select">Select</option>
-                <option value="Kegalle">Kegalle</option>
+                {
+
+                  districts.map(dis =>
+                    <option value={dis}>{dis}</option>
+                  )
+
+                }
               </select>
               {errors.district && <span className="text-red-500">{errors.district}</span>}
             </div>

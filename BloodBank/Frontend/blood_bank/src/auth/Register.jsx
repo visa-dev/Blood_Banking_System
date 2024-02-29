@@ -7,7 +7,8 @@ import Footer from '../components/common/Footer';
 
 import { navLinks } from '../assets/data/HeaderData';
 import { socialLinks, contactData } from '../assets/data/FooterData';
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Province from '../assets/data/SelectData';
 
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -19,7 +20,7 @@ const Register = () => {
 
   const [errors, setErrors] = useState({});
   const navigetor = useNavigate();
-
+  const [districts, setDistricts] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -39,7 +40,7 @@ const Register = () => {
 
   });
 
-  
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -52,6 +53,18 @@ const Register = () => {
     setFormData({ ...formData, [name]: value });
 
   }
+
+  const getDistrcts = (e) => {
+
+    Province.map(pr => {
+      if (pr.name === e.target.value) {
+        setDistricts(pr.districts);
+      }
+    }
+    )
+
+  };
+
 
   const validateFormData = () => {
 
@@ -311,9 +324,15 @@ const Register = () => {
           <label className="block text-sm font-medium text-gray-700 mb-[5px]">
             Province
           </label>
-          <select name="province" value={formData.province} onChange={handleChnage} className='w-full h-[40px] bg-slate-100'>
+          <select name="province" value={formData.province} onChange={(e) => {
+            handleChnage(e); getDistrcts(e);
+          }} className='w-full h-[40px] bg-slate-100'>
             <option value="Select">Select</option>
-            <option value="Sabaragamuwa">Sabaragamuwa</option>
+            {
+              Province.map((province) =>
+                <option value={province.name}>{province.name}</option>
+              )
+            }
           </select>
           {errors.province && <span className="text-red-500">{errors.province}</span>}
         </div>
@@ -324,7 +343,13 @@ const Register = () => {
           </label>
           <select name="district" value={formData.district} onChange={handleChnage} className='w-full h-[40px] bg-slate-100'>
             <option value="Select">Select</option>
-            <option value="Kegalle">Kegalle</option>
+            {
+
+              districts.map(dis =>
+                <option value={dis}>{dis}</option>
+              )
+
+            }
           </select>
           {errors.district && <span className="text-red-500">{errors.district}</span>}
         </div>

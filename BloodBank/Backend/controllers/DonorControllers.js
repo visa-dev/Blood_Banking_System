@@ -123,6 +123,7 @@ export const getDonors = async (req, res) => {
     try {
         const filter = { bloodgroup: req.params.blood, province: req.params.province, district: req.params.district }
         const donors = await Donor.find(filter);
+      
         res.status(200).json(donors);
     } catch (error) {
         // console.error('Error:', error.message);
