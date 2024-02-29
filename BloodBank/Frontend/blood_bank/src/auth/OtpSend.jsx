@@ -5,6 +5,9 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import { useNavigate } from "react-router-dom";
 import { axiosPost } from '../AxiosOperations';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const OtpSend = () => {
 
@@ -25,6 +28,7 @@ const OtpSend = () => {
         setInputEmail(e.target.value);
 
     }
+    const notify = () => toast("Wow so easy!");
 
     const cheakOperations = async () => {
 
@@ -54,9 +58,14 @@ const OtpSend = () => {
                     <center className='font-sans mb-[10px]'>Enter Email</center>
                     <center className='font-sans mb-[10px] '><input type='text' className='w-[250px]' onChange={getEmail} ></input></center>
 
-                    <center > <Button variant="contained" onClick={cheakOperations} endIcon={<SendIcon />}>
-                        Send
-                    </Button></center>
+                    <div>
+                        <center >
+                            <Button variant="contained" onClick={cheakOperations} endIcon={<SendIcon />}>
+                                Send
+                            </Button>
+                        </center>
+
+                    </div>
 
 
                 </div>

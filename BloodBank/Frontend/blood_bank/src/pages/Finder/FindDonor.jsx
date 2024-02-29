@@ -12,6 +12,7 @@ import testImg from '/user.png';
 import Spinner1 from '../../pages/spinners/Spinner1';
 
 import Province from '../../assets/data/SelectData';
+import Email from '../../popups/Email';
 
 const FindDonor = () => {
 
@@ -163,9 +164,8 @@ const FindDonor = () => {
                     {chatVisible && <Chat name={item.fullname} id={item._id} />}
                   </div>
                   <div>
-                    <Stack direction="row" spacing={2}>
-                      <Button variant="outlined" className='w-full'>Email</Button>
-                    </Stack>
+                  {chatVisible && <Email email={item.email} id={item._id} />}
+                    
                   </div>
                 </div>
               </div>

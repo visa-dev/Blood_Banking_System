@@ -2,15 +2,18 @@ import Donor from "../models/Donor.js";
 import Notification from "../models/Notification.js";
 import Otp from "../models/Otp.js";
 
+
+
 import nodemailer from 'nodemailer';
 import bcrypt from 'bcrypt';
 import OTPGenerator from 'otp-generator';
+import SendEmail from "../models/SendEmail.js";
 
 let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-        user: "project.works033@gmail.com",
-        pass: "bvpwshpfewgvrmlj"
+        user: "liveheartzbloodbank@gmail.com",
+        pass: "bmshexgnqsyckqth"
     }
 });
 
@@ -59,12 +62,10 @@ export const createOtp = async (req, res) => {
         const otpToken = OTPGenerator.generate(4, { upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false });
 
         const mailOptions = {
-            from: "project.works033@gmail.com",
+            from: "liveheartzbloodbank@gmail.com",
             to: email,
             subject: "Verify Your Email",
             html: `<p>Your OTP is <span style="color: red; font-size: 20px; font-family: Arial, sans-serif; font-weight: bold;">${otpToken}</span></p>`
-                `
-            `
         }
 
         const newOtp = new Otp({
@@ -123,7 +124,7 @@ export const getDonors = async (req, res) => {
     try {
         const filter = { bloodgroup: req.params.blood, province: req.params.province, district: req.params.district }
         const donors = await Donor.find(filter);
-      
+
         res.status(200).json(donors);
     } catch (error) {
         // console.error('Error:', error.message);
@@ -151,7 +152,7 @@ export const login = async (req, res) => {
         if (donorprofile != null) {
 
             const password = donorprofile.password;
-            const profile_validate = await bcrypt.compare(req.body.password, password);
+            const profile_validate = await bcrypt.compare(req.body.password, password) & donorprofile.verified == true;
 
             if (profile_validate) {
                 res.status(200).json({ success: true, id: donorprofile._id });
@@ -200,6 +201,37 @@ export const setNotifications = async (req, res) => {
 
         await notification.save();
         res.status(200).json({ success: true, message: 'Successfully Data Added' });
+    } catch (error) {
+        // console.error('Error:', error.message);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+}
+
+export const setEmail = async (req, res) => {
+    try {
+
+        const { reciver_id, message, email, subject } = req.body;
+
+        const reciverEmail = await Donor.findById(reciver_id);
+
+
+        const emailsend = new SendEmail({
+            reciver_id,
+            message,
+            email,
+            subject
+        });
+
+        const mailOptions = {
+            from: "liveheartzbloodbank@gmail.com",
+            to: reciverEmail.email,
+            subject: "Blood Request",
+            html: `<p>${message} </p> <h1>Please contact me ${email}</>`
+        }
+
+        await transporter.sendMail(mailOptions);
+        await emailsend.save();
+        res.status(200).json({ success: true, message: 'Successfully Send Email' });
     } catch (error) {
         // console.error('Error:', error.message);
         res.status(500).json({ success: false, message: 'Server error' });
