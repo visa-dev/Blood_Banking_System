@@ -7,7 +7,7 @@ import Footer from '../components/common/Footer';
 
 import { navLinks } from '../assets/data/HeaderData';
 import { socialLinks, contactData } from '../assets/data/FooterData';
-
+import { json, useNavigate } from "react-router-dom";
 
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -17,7 +17,7 @@ import Stack from '@mui/material/Stack';
 const Register = () => {
 
   const [errors, setErrors] = useState({});
-
+  const navigetor = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -100,19 +100,25 @@ const Register = () => {
     return Object.keys(errors).length === 0;
   }
 
-  const createDonor = () => {
+  const verifiDonor = async () => {
     try {
+
       if (validateFormData()) {
-        axiosPost('donor/register', JSON.stringify(formData));
-        alert("Succsessfully created");
+
+        await axiosPost('donor/register', formData);
+        
+
+        navigetor(`/register/otpsend?formdata=${encodeURIComponent(JSON.stringify(formData))}`);
 
       }
     } catch (error) {
-      alert("Fail to create");
+      alert("Email alreday exists");
     }
 
 
   }
+
+
 
   return (
     <div>
@@ -330,8 +336,8 @@ const Register = () => {
       <div className='ml-[150px] mb-[25px]'>
         <Stack direction="row" spacing={2}>
 
-          <Button variant="contained" color="success" className='w-[150px] h-[40px]' onClick={createDonor}>
-            Register
+          <Button variant="contained" color="success" className='w-[250px] h-[40px]' onClick={verifiDonor}>
+            Mobile Verification
           </Button>
 
         </Stack>

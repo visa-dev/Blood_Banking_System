@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const DonorSchema = new mongoose.Schema({
 
     fullname: { type: String },
-    email: { type: String },
+    email: { type: String, required: true, unique: true },
     mobile: { type: Number },
     password: { type: String },
     bloodgroup: { type: String },
@@ -14,7 +14,8 @@ const DonorSchema = new mongoose.Schema({
     zipcode: { type: String },
     province: { type: String },
     tandc: { type: Boolean },
-    district: { type: String }
+    district: { type: String },
+    verified: { type: Boolean }
 
 }
 
