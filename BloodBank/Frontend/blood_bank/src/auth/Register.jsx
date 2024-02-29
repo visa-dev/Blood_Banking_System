@@ -11,6 +11,7 @@ import { json, useNavigate } from "react-router-dom";
 
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 
 
@@ -37,6 +38,8 @@ const Register = () => {
     tandc: false
 
   });
+
+  
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -106,7 +109,7 @@ const Register = () => {
       if (validateFormData()) {
 
         await axiosPost('donor/register', formData);
-        
+
 
         navigetor(`/register/otpsend?formdata=${encodeURIComponent(JSON.stringify(formData))}`);
 

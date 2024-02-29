@@ -21,7 +21,7 @@ export const createDonor = async (req, res) => {
         const existingUser = await Donor.findOne({ email });
 
         if (existingUser) {
-            
+
             return res.status(400).json({ success: false, message: 'Email already exists' });
         }
 
@@ -62,7 +62,9 @@ export const createOtp = async (req, res) => {
             from: "project.works033@gmail.com",
             to: email,
             subject: "Verify Your Email",
-            html: `<p>Otp is ${otpToken}</p>`
+            html: `<p>Your OTP is <span style="color: red; font-size: 20px; font-family: Arial, sans-serif; font-weight: bold;">${otpToken}</span></p>`
+                `
+            `
         }
 
         const newOtp = new Otp({
@@ -95,7 +97,7 @@ export const verifyOtp = async (req, res) => {
         const hashedOtp = otpRecords[0].otp;
 
         if (expireAt < Date.now()) {
-            console.log("OTP EXPIRED");
+            // console.log("OTP EXPIRED");
             await Otp.deleteMany({ email });
             return res.status(400).json({ success: false, message: "OTP has expired" });
         }
@@ -105,10 +107,10 @@ export const verifyOtp = async (req, res) => {
         if (validOtp) {
             await Donor.updateOne({ email }, { verified: true });
             await Otp.deleteMany({ email });
-            console.log("OTP MATCHED");
+            // console.log("OTP MATCHED");
             return res.status(200).json({ success: true, message: "OTP verified successfully" });
         } else {
-            console.log("OTP NOT MATCHED");
+            // console.log("OTP NOT MATCHED");
             return res.status(400).json({ success: false, message: "Incorrect OTP" });
         }
     } catch (error) {
@@ -140,16 +142,24 @@ export const getAllDonors = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const filter = { email: req.body.email }
-        const donorprofile = await Donor.findOne(filter);
+        const { email } = req.body;
+
+        const donorprofile = await Donor.findOne({ email: email });
+
 
         if (donorprofile != null) {
+
             const password = donorprofile.password;
             const profile_validate = await bcrypt.compare(req.body.password, password);
 
             if (profile_validate) {
-                res.status(200).json(donorprofile);
+                res.status(200).json({ success: true, id: donorprofile._id });
+            } else {
+                res.status(201).json({ success: false, message: "Password not match" });
             }
+        } else {
+
+            res.status(201).json({ success: false, message: `${email} No Account found` });
         }
     } catch (error) {
         // console.error('Error:', error.message);

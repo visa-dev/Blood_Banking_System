@@ -4,15 +4,17 @@ import { useLocation } from "react-router-dom";
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import { axiosPost } from '../AxiosOperations';
-
+import { useNavigate } from 'react-router-dom';
 const OtpReceive = () => {
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const formdata = searchParams.get("formdata");
 
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState(null);
   var decodedFormData = JSON.parse(formdata);
+
+  const navigetor = useNavigate();
 
   const getOtp = (e) => {
 
@@ -24,13 +26,17 @@ const OtpReceive = () => {
 
     try {
 
-     
 
       await axiosPost('donor/register/otpreceive', { email: decodedFormData.email, otp: otp });
+      navigetor('/login');
+
+
 
 
     } catch (error) {
-      alert(`Donor Create Fail ${error.message}`)
+
+
+      alert(error.response.data.message)
     }
   }
 
@@ -40,7 +46,7 @@ const OtpReceive = () => {
       <div className=' border-8 p-[75px]' >
         <div>
           <center className='homepara text-[26px]'>Hi <span className='text-red-600 font-bold'>{decodedFormData.fullname}</span> Thanks for Register With Us</center>
-          <center className='homepara text-[16px]'>Enter 4 Digit Code which Receive in Your Mobile No : <span className='text-red-600 font-bold'>{decodedFormData.mobile}</span></center>
+          <center className='homepara text-[16px]'>Enter 4 Digit Code which Receive in Your Email : <span className='text-red-600 font-bold'>{decodedFormData.email}</span></center>
 
         </div>
 
