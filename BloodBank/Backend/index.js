@@ -7,6 +7,8 @@ import DonorRoutes from './routes/DonorRoutes.js';
 import BloodRoutes from './routes/BloodRequestRoutes.js';
 import CommonRoutes from './routes/CommonRoutes.js';
 
+
+
 const app = express();
 
 app.use(cors({
@@ -19,6 +21,7 @@ app.use(express.json());
 app.use('/donor', DonorRoutes);
 app.use('/finder', BloodRoutes);
 app.use('/home', CommonRoutes);
+
 
 const connectDB = async () => {
     try {

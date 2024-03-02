@@ -19,7 +19,8 @@ export const createBloodRequest = async (req, res) => {
             province,
             district,
             mobile,
-            tandc
+            tandc,
+            verified: false
         });
 
 

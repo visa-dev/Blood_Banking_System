@@ -16,7 +16,7 @@ import Stack from '@mui/material/Stack';
 const AdminDashboard = () => {
 
 
-    const [profile, setProfile] = useState([]);
+  
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -26,11 +26,7 @@ const AdminDashboard = () => {
 
         axiosGet(`donor/byid/${id}`)
 
-            .then(data => {
-
-                setProfile(data.data);
-
-            })
+          
             .catch(error => {
 
                 console.error('Error fetching data:', error);

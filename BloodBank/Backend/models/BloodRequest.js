@@ -12,7 +12,8 @@ const BloodRequestSchema = new mongoose.Schema({
     datewhenneed: { type: String },
     province: { type: String },
     district: { type: String },
-    mobile: { type: Number }
+    mobile: { type: Number },
+    verified: { type: Boolean }
 
 }
 

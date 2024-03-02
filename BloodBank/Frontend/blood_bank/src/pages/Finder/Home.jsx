@@ -181,7 +181,7 @@ const Home = () => {
           </div>
           <div className='flex justify-center mt-6'>
             <Stack direction="row" spacing={2}>
-              <Button variant="outlined" color="error" component={Link} to="/finddonor">Find Donor</Button>
+              <Button variant="outlined" color="error" component={Link} to={`/finddonor?verify=${encodeURIComponent(false)}`}>Find Donor</Button>
             </Stack>
           </div>
         </div>
@@ -208,7 +208,7 @@ const Home = () => {
       <hr class="border-b-2 border-pink-600  m-[25px]" />
       <div className='mt-[10px]'>
         <Footer navLinks1={socialLinks} navLinks2={contactData} />
-       
+
       </div>
     </div>
   )

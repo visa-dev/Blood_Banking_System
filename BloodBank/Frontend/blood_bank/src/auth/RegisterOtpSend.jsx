@@ -28,7 +28,7 @@ const OtpSend = () => {
         setInputEmail(e.target.value);
 
     }
-    const notify = () => toast("Wow so easy!");
+
 
     const cheakOperations = async () => {
 

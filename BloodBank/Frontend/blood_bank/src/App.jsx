@@ -18,8 +18,10 @@ import AdminDashboard from './pages/Admin/AdminDashboard';
 import Donor from './pages/Admin/Donor';
 import BloodBank from './pages/Admin/BloodBank';
 import AllRequests from './pages/Admin/AllRequests';
-import OtpSend from './auth/OtpSend';
-import OtpReceive from './auth/OtpReceive';
+import RegisterOtpSend from './auth/RegisterOtpSend';
+import RegisterOtpReceive from './auth/RegisterOtpReceive';
+import BloodRequestOtpSend from './auth/BloodRequestOtpSend';
+import BloodRequestOtpReceive from './auth/BloodRequestOtpReceive';
 
 function App() {
 
@@ -35,8 +37,13 @@ function App() {
         <Route path='/news' element={<News />}></Route>
         <Route path='/contact' element={<Contact />}></Route>
         <Route path='/register' element={<Register />}></Route>
-        <Route path='/register/otpsend' element={<OtpSend />}></Route>
-        <Route path='/register/otpreceive' element={<OtpReceive />}></Route>
+
+        <Route path='/register/otpsend' element={<RegisterOtpSend />}></Route>
+        <Route path='/register/otpreceive' element={<RegisterOtpReceive />}></Route>
+
+        <Route path='/bloodrequest/otpsend' element={<BloodRequestOtpSend />}></Route>
+        <Route path='/bloodrequest/otpreceive' element={<BloodRequestOtpReceive />}></Route>
+
         <Route path='/login' element={<Login />}></Route>
         <Route path='/requestblood' element={<RequestBlood />}></Route>
         <Route path='/finddonor' element={<FindDonor />}></Route>

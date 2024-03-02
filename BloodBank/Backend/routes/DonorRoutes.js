@@ -1,5 +1,5 @@
 import express from "express";
-import { createDonor, getDonors, login, findById, getNotifications, setNotifications, getAllDonors, createOtp, verifyOtp, setEmail } from '../controllers/DonorControllers.js';
+import { createDonor, getDonors, login, findById, getNotifications, setNotifications, getAllDonors, registerCreateOtp, registerVerifyOtp, setEmail, blodRequestCreateOtp, bloodRequestVerifyOtp } from '../controllers/DonorControllers.js';
 
 
 const router = express.Router();
@@ -15,7 +15,11 @@ router.post('/notification/', setNotifications);
 
 router.post('/sendemail', setEmail);
 
-router.post('/register/otpsend', createOtp);
-router.post('/register/otpreceive', verifyOtp);
+router.post('/register/otpsend', registerCreateOtp);
+router.post('/register/otpreceive', registerVerifyOtp);
+
+router.post('/bloodrequest/otpsend', blodRequestCreateOtp);
+router.post('/bloodrequest/otpreceive', bloodRequestVerifyOtp);
+
 
 export default router;

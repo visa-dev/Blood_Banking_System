@@ -4,7 +4,7 @@ import { axiosPost } from '../../AxiosOperations';
 
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
-
+import { useNavigate } from 'react-router-dom';
 import { navLinks } from '../../assets/data/HeaderData';
 import { socialLinks, contactData } from '../../assets/data/FooterData';
 import Province from '../../assets/data/SelectData';
@@ -12,6 +12,8 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
 const RequestBlood = () => {
+
+  const navigetor = useNavigate();
 
   const [errors, setErrors] = useState({});
   const [districts, setDistricts] = useState([]);
@@ -101,19 +103,39 @@ const RequestBlood = () => {
   }
 
 
-  const createBloodRequest = async () => {
+  // const createBloodRequest = async () => {
 
+  //   try {
+  //     if (validateFormData()) {
+  //       axiosPost('finder/bloodrequest', JSON.stringify(formData));
+  //       alert("Succsessfully Requested");
+  //     }
+  //   } catch (error) {
+  //     alert("Request Fail");
+  //   }
+
+
+  // }
+
+  const verifiBloodRequest = async () => {
     try {
+
       if (validateFormData()) {
-        axiosPost('finder/bloodrequest', JSON.stringify(formData));
-        alert("Succsessfully Requested");
+
+        await axiosPost('finder/bloodrequest', formData);
+
+
+        navigetor(`/bloodrequest/otpsend?formdata=${encodeURIComponent(JSON.stringify(formData))}`);
+
       }
     } catch (error) {
-      alert("Request Fail");
+      console.log(error);
+      alert("Email alreday exists");
     }
 
 
   }
+
 
   return (
     <div>
@@ -316,7 +338,7 @@ const RequestBlood = () => {
       <div className='ml-[150px] mb-[25px]'>
         <Stack direction="row" spacing={2}>
 
-          <Button variant="contained" color="success" className='w-[200px] h-[40px]' onClick={createBloodRequest}>
+          <Button variant="contained" color="success" className='w-[200px] h-[40px]' onClick={verifiBloodRequest}>
             Request Blood
           </Button>
 

@@ -1,4 +1,6 @@
 import Donor from "../models/Donor.js";
+import BloodBank from "../models/BloodBank.js";
+
 
 export const countOfDonors = async (req, res) => {
 
@@ -22,4 +24,51 @@ export const countOfDonors = async (req, res) => {
 
     }
 }
+
+export const bloodBankCount = async (req, res) => {
+
+    try {
+
+
+        const Apositive = await BloodBank.findOne({ type: "A+" });
+        const Anegative = await BloodBank.findOne({ type: "A-" });
+        const Bpositive = await BloodBank.findOne({ type: "B+" });
+        const Bnegative = await BloodBank.findOne({ type: "B-" });
+        const Opositive = await BloodBank.findOne({ type: "O+" });
+        const Onegative = await BloodBank.findOne({ type: "O-" });
+        const ABpositive = await BloodBank.findOne({ type: "AB+" });
+        const ABnegative = await BloodBank.findOne({ type: "AB-" });
+
+        const obj = [{ id: Apositive._id, type: "A+", count: Apositive.count }, { id: Anegative._id, type: "A-", count: Anegative.count }, { id: Bpositive._id, type: "B+", count: Bpositive.count }, { id: Bnegative._id, type: "B-", count: Bnegative.count }, { id: Opositive._id, type: "O+", count: Opositive.count }, { id: Onegative._id, type: "O-", count: Onegative.count }, { id: ABpositive._id, type: "AB+", count: ABpositive.count }, { id: ABnegative._id, type: "AB-", count: ABnegative.count }];
+
+        res.status(200).json(obj);
+
+    } catch (error) {
+        res.status(400).json({ success: false, message: `Some Error Occured ${error.message}` });
+
+    }
+}
+
+export const updateBloodBankCount = async (req, res) => {
+
+    try {
+        const { id, option, count } = req.params;
+
+        if (option == "add") {
+
+            await BloodBank.findByIdAndUpdate(id, { $inc: { count: 1 } });
+           
+        }
+        else if (option == "sub") {
+            await BloodBank.findByIdAndUpdate(id, { $inc: { count: -1 } });
+            
+        }
+
+
+    } catch (error) {
+        res.status(400).json({ success: false, message: `Some Error Occured ${error.message}` });
+
+    }
+}
+
 

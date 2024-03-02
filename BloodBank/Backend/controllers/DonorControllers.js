@@ -8,6 +8,7 @@ import nodemailer from 'nodemailer';
 import bcrypt from 'bcrypt';
 import OTPGenerator from 'otp-generator';
 import SendEmail from "../models/SendEmail.js";
+import BloodRequest from "../models/BloodRequest.js";
 
 let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -56,7 +57,7 @@ export const createDonor = async (req, res) => {
     }
 }
 
-export const createOtp = async (req, res) => {
+export const registerCreateOtp = async (req, res) => {
     try {
         const { email } = req.body;
         const otpToken = OTPGenerator.generate(4, { upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false });
@@ -64,7 +65,7 @@ export const createOtp = async (req, res) => {
         const mailOptions = {
             from: "liveheartzbloodbank@gmail.com",
             to: email,
-            subject: "Verify Your Email",
+            subject: "Verify Your Email For Register",
             html: `<p>Your OTP is <span style="color: red; font-size: 20px; font-family: Arial, sans-serif; font-weight: bold;">${otpToken}</span></p>`
         }
 
@@ -85,7 +86,7 @@ export const createOtp = async (req, res) => {
     }
 }
 
-export const verifyOtp = async (req, res) => {
+export const registerVerifyOtp = async (req, res) => {
     try {
         const { otp, email } = req.body;
         const otpRecords = await Otp.find({ email });
@@ -106,7 +107,7 @@ export const verifyOtp = async (req, res) => {
         const validOtp = await bcrypt.compare(otp, hashedOtp);
 
         if (validOtp) {
-            await Donor.updateOne({ email }, { verified: true });
+            await BloodRequest.updateOne({ email }, { verified: true });
             await Otp.deleteMany({ email });
             // console.log("OTP MATCHED");
             return res.status(200).json({ success: true, message: "OTP verified successfully" });
@@ -119,6 +120,74 @@ export const verifyOtp = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 }
+
+export const blodRequestCreateOtp = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const otpToken = OTPGenerator.generate(4, { upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false });
+
+        const mailOptions = {
+            from: "liveheartzbloodbank@gmail.com",
+            to: email,
+            subject: "Verify Your Email For Send Blood Request",
+            html: `<p>Your OTP is <span style="color: red; font-size: 20px; font-family: Arial, sans-serif; font-weight: bold;">${otpToken}</span></p>`
+        }
+
+        const newOtp = new Otp({
+            email,
+            otp: await bcrypt.hash(otpToken, 10),
+            createdAt: Date.now(),
+            expireAt: Date.now() + 3600000,
+        });
+
+        await newOtp.save();
+        await transporter.sendMail(mailOptions);
+
+        res.status(200).json({ success: true, message: 'OTP sent successfully' });
+    } catch (error) {
+        // console.error('Error:', error.message);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+}
+
+export const bloodRequestVerifyOtp = async (req, res) => {
+    try {
+        const { otp, email } = req.body;
+        const otpRecords = await Otp.find({ email });
+
+        if (otpRecords.length <= 0) {
+            return res.status(404).json({ success: false, message: "Account record doesn't exist or has been verified already" });
+        }
+
+        const { expireAt } = otpRecords[0];
+        const hashedOtp = otpRecords[0].otp;
+
+        if (expireAt < Date.now()) {
+            // console.log("OTP EXPIRED");
+            await Otp.deleteMany({ email });
+            return res.status(400).json({ success: false, message: "OTP has expired" });
+        }
+
+        const validOtp = await bcrypt.compare(otp, hashedOtp);
+
+        if (validOtp) {
+            await BloodRequest.updateOne({ email }, { verified: true });
+            await Otp.deleteMany({ email });
+            // console.log("OTP MATCHED");
+            return res.status(200).json({ success: true, message: "OTP verified successfully" });
+        } else {
+            // console.log("OTP NOT MATCHED");
+            return res.status(400).json({ success: false, message: "Incorrect OTP" });
+        }
+    } catch (error) {
+        // console.error('Error:', error.message);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+}
+
+
+
+
 
 export const getDonors = async (req, res) => {
     try {
@@ -210,23 +279,37 @@ export const setNotifications = async (req, res) => {
 export const setEmail = async (req, res) => {
     try {
 
-        const { reciver_id, message, email, subject } = req.body;
-
-        const reciverEmail = await Donor.findById(reciver_id);
+        const { data, receiverId } = req.body;
+        console.log(data)
+        const reciver = await Donor.findById(receiverId);
 
 
         const emailsend = new SendEmail({
-            reciver_id,
-            message,
-            email,
-            subject
+            receiverId,
+
         });
 
         const mailOptions = {
             from: "liveheartzbloodbank@gmail.com",
-            to: reciverEmail.email,
+            to: reciver.email,
             subject: "Blood Request",
-            html: `<p>${message} </p> <h1>Please contact me ${email}</>`
+            html:
+                `<div>
+
+                <h2>Patient Information</h2>
+                <ul>
+                    <li><strong>Patient Name:</strong>${data.patientname}</li>
+                    <li><strong>Doctor Name:</strong>${data.doctorname}</li>
+                    <li><strong>Blood Group:</strong>${data.bloodgroup}</li>
+                    <li><strong>Needed Date:</strong>${data.datewhenneed}</li>
+                    <li><strong>Hospital Name:</strong>${data.hospitalname}</li>
+                    <li><strong>Message Date:</strong>${data.othermsg}</li>
+                    <li><strong>Email:</strong>${data.email}</li>
+                    <li><strong>Mobile:</strong>${data.mobile}</li>
+                </ul>
+            
+                 <div/>`
+
         }
 
         await transporter.sendMail(mailOptions);
@@ -237,3 +320,4 @@ export const setEmail = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 }
+
