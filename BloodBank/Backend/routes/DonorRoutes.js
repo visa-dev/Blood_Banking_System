@@ -1,5 +1,5 @@
 import express from "express";
-import { createDonor, getDonors, login, findById, getNotifications, setNotifications, getAllDonors, registerCreateOtp, registerVerifyOtp, setEmail, blodRequestCreateOtp, bloodRequestVerifyOtp } from '../controllers/DonorControllers.js';
+import { createDonor, getDonors, login, findById, getNotifications, setNotifications, getAllDonors, registerCreateOtp, registerVerifyOtp, setEmail, blodRequestCreateOtp, bloodRequestVerifyOtp, deleteDonor } from '../controllers/DonorControllers.js';
 
 
 const router = express.Router();
@@ -12,7 +12,7 @@ router.get('/byid/:id', findById);
 router.get('/alldonors', getAllDonors);
 router.get('/notification/:id', getNotifications);
 router.post('/notification/', setNotifications);
-
+router.get('/delete/:email', deleteDonor);
 router.post('/sendemail', setEmail);
 
 router.post('/register/otpsend', registerCreateOtp);

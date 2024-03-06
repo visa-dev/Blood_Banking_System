@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 import DonorRoutes from './routes/DonorRoutes.js';
 import BloodRoutes from './routes/BloodRequestRoutes.js';
 import CommonRoutes from './routes/CommonRoutes.js';
-
+import ReportRoutes from './routes/ReportsRoutes.js';
 
 
 const app = express();
@@ -21,6 +21,7 @@ app.use(express.json());
 app.use('/donor', DonorRoutes);
 app.use('/finder', BloodRoutes);
 app.use('/home', CommonRoutes);
+app.use('/report', ReportRoutes);
 
 
 const connectDB = async () => {

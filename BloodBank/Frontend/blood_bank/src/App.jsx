@@ -22,7 +22,7 @@ import RegisterOtpSend from './auth/RegisterOtpSend';
 import RegisterOtpReceive from './auth/RegisterOtpReceive';
 import BloodRequestOtpSend from './auth/BloodRequestOtpSend';
 import BloodRequestOtpReceive from './auth/BloodRequestOtpReceive';
-
+import Report from './pages/Admin/Reports'
 function App() {
 
 
@@ -58,6 +58,7 @@ function App() {
         <Route path='/admin/donors' element={<Donor />}></Route>
         <Route path='/admin/bloodbank' element={<BloodBank />}></Route>
         <Route path='/admin/requests' element={<AllRequests />}></Route>
+        <Route path='/admin/reports' element={<Report />}></Route>
       </Routes>
     </BrowserRouter>
   )

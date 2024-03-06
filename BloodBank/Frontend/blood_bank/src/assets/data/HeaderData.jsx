@@ -52,6 +52,11 @@ const adminNavLinks = [
         path: '/admin/requests',
         display: 'REQUESTS'
 
+    },
+    {
+        path: '/admin/reports',
+        display: 'REPORTS'
+
     }
 
 ]

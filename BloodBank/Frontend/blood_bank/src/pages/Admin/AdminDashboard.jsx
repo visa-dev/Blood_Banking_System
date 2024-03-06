@@ -47,7 +47,7 @@ const AdminDashboard = () => {
                 <Header navLinks={adminNavLinks} donorloged={true} />
             </div>
             <div className='flex justify-center gap-4 p-[20px] bg-gray-800'>
-                <div className='grid lg:grid-cols-3 md:grid-cols-2 gap-10 '>
+                <div className='grid lg:grid-cols-4 md:grid-cols-2 gap-10 '>
 
                     {
                         adminNavLinks.map((item) =>

@@ -8,7 +8,7 @@ import { donorNavLinks } from '../../assets/data/HeaderData';
 import { socialLinks, contactData } from '../../assets/data/FooterData';
 
 import { Table } from 'antd';
-
+import Report from '../Donar/popup/Report.jsx';
 
 const Requests = () => {
 
@@ -17,6 +17,8 @@ const Requests = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const blood = searchParams.get("blood");
+
+
 
   useEffect(() => {
 
@@ -39,6 +41,9 @@ const Requests = () => {
   }, []);
 
 
+  const addReport = (id) => {
+    setReport(true);
+  }
 
   const columns = [
     {
@@ -65,7 +70,7 @@ const Requests = () => {
       title: 'When Need',
       dataIndex: 'datewhenneed',
       key: 'datewhenneed',
-      render: (text) => <div style={{ color: 'red', fontWeight:'bold' }}>{text}</div>
+      render: (text) => <div style={{ color: 'red', fontWeight: 'bold' }}>{text}</div>
     },
     {
       title: 'Hospital Name',
@@ -93,7 +98,7 @@ const Requests = () => {
       dataIndex: 'district',
       key: 'district',
     }
-
+ 
 
 
   ];

@@ -1,7 +1,7 @@
 import Donor from "../models/Donor.js";
 import Notification from "../models/Notification.js";
 import Otp from "../models/Otp.js";
-
+import Reports from "../models/Reports.js";
 
 
 import nodemailer from 'nodemailer';
@@ -107,7 +107,8 @@ export const registerVerifyOtp = async (req, res) => {
         const validOtp = await bcrypt.compare(otp, hashedOtp);
 
         if (validOtp) {
-            await BloodRequest.updateOne({ email }, { verified: true });
+           
+            await Donor.updateOne({ email }, { verified: true });
             await Otp.deleteMany({ email });
             // console.log("OTP MATCHED");
             return res.status(200).json({ success: true, message: "OTP verified successfully" });
@@ -280,7 +281,7 @@ export const setEmail = async (req, res) => {
     try {
 
         const { data, receiverId } = req.body;
-        console.log(data)
+
         const reciver = await Donor.findById(receiverId);
 
 
@@ -321,3 +322,20 @@ export const setEmail = async (req, res) => {
     }
 }
 
+export const deleteDonor = async (req, res) => {
+    try {
+        const email = req.params.email;
+
+        await Reports.findOneAndDelete({ email });
+        const deletedDonor = await Donor.findOneAndDelete({ email });
+        
+        if (deletedDonor) {
+            res.status(200).json({ message: 'Donor deleted successfully' });
+        } else {
+            res.status(404).json({ message: 'Donor not found' });
+        }
+    } catch (error) {
+
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+}

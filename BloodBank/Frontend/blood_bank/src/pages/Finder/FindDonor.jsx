@@ -9,10 +9,11 @@ import Chat from '../../popups/Chat';
 import { axiosGet, axiosPost } from '../../AxiosOperations';
 import { useLocation } from "react-router-dom";
 import testImg from '/user.png';
-
+import { Link } from 'react-router-dom';
 import Spinner1 from '../../pages/spinners/Spinner1';
-
+import Report from '../Donar/popup/Report.jsx';
 import Province from '../../assets/data/SelectData';
+
 
 
 
@@ -24,6 +25,8 @@ const FindDonor = () => {
   const verify = searchParams.get("verify");
   const requesterData = searchParams.get("data");
   var decodedFormData = JSON.parse(requesterData);
+
+
 
   useEffect(() => {
 
@@ -42,11 +45,34 @@ const FindDonor = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const [donorList, setDonorList] = useState([]);
+  const [chatVisible, setChatVisible] = useState(false);
+  const [available, setAvailable] = useState(false);
+
+
+
   const [formData, setFormData] = useState({
     bloodgroup: 'Select',
     province: 'Select',
     district: 'Select',
   });
+
+  const bloodbankCheck = () => {
+    try {
+      axiosGet(`home/bloodbank/availability/${formData.bloodgroup}`).then((data) => {
+        if (formData.district == "Vavuniya" & data.data.available & verifyuser) {
+          setAvailable(true);
+        } else {
+          setAvailable(false);
+        }
+
+      });
+
+
+    } catch (error) {
+
+    }
+
+  }
 
   const handleChnage = (e) => {
     const { value, name } = e.target;
@@ -97,6 +123,7 @@ const FindDonor = () => {
     if (validateFormData()) {
       await axiosGet(`donor/finddonor/${formData.bloodgroup}/${formData.province}/${formData.district}`)
         .then(data => {
+          bloodbankCheck();
           setDonorList(data.data);
         }).then(setInterval(() => {
           setLoading(false);
@@ -108,7 +135,10 @@ const FindDonor = () => {
     }
   };
 
-  const [chatVisible, setChatVisible] = useState(false);
+  const openReportBox = () => {
+
+  }
+
 
   return (
     <div>
@@ -176,6 +206,12 @@ const FindDonor = () => {
         </form>
       </div>
 
+
+      {
+        donorList.length && available && <center className='text-[26px] homepara text-red-400 underline'>Your blood s avilable at our blood bank you can collect or you can contact thease donors.</center>
+      }
+
+
       {donorList.length !== 0 ? (
         loading ? (<Spinner1 />) : (<div className='grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4'>
           {donorList.map(item => (
@@ -192,6 +228,7 @@ const FindDonor = () => {
                     </div>
                   </div>
                 </div>
+
                 {
                   verifyuser ? (<div className='grid grid-cols-2'>
                     <div>
@@ -203,7 +240,12 @@ const FindDonor = () => {
                       </Button>}
 
                     </div>
-                  </div>) : (<><center>Request Click</center></>)
+                  </div>) : (
+                    <div className='flex justify-between '>
+                      <Link className='text-[16px] homepara text-green-800 font-bold w-full flex justify-center ' style={{ border: '1px solid black', padding: '4px' }} to={'/requestblood'}>SEND REQUEST</Link>
+                      <Report name={item.fullname} email={item.email} />
+
+                    </div>)
                 }
 
               </div>
