@@ -80,7 +80,7 @@ const Report = () => {
 
   return (
     <div className='grid grid-cols-1 p-[30px] '>
-      <center className='homepara font-bold text-[26px]'>Donor List</center>
+      <center className='homepara font-bold text-[26px]'>Reports</center>
       {
         loading ? (<Spinner1 />) : (<div className='bg-slate-400 m-[50px]'>
           <Table columns={columns} dataSource={reports} />

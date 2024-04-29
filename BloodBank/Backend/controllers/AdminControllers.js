@@ -4,7 +4,7 @@ export const createAdmin = async (req, res) => {
 
     try {
         const { username,password,email,mobile } = req.body;
-        // console.log(req.body);
+        
    const hashed = await bcrypt.hash(password, 10);
 
         const admin = new AdminData({

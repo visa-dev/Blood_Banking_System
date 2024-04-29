@@ -23,7 +23,7 @@ import RegisterOtpReceive from './auth/RegisterOtpReceive';
 import BloodRequestOtpSend from './auth/BloodRequestOtpSend';
 import BloodRequestOtpReceive from './auth/BloodRequestOtpReceive';
 import Report from './pages/Admin/Reports'
-import AdminLogin from './pages/Admin/AdminLogin';
+
 import CreateAdmin from './pages/Admin/CreateAdmin';
 
 
@@ -58,7 +58,7 @@ function App() {
         <Route path='/donor/requests' element={<Requests />}></Route>
         <Route path='/donor/notifications' element={<Notifications />}></Route>
 
-        <Route path='/admin/login' element={<AdminLogin/>}></Route>
+       
         <Route path='/admin/profile' element={<AdminDashboard/>}></Route>
         <Route path='/admin/donors' element={<Donor />}></Route>
         <Route path='/admin/bloodbank' element={<BloodBank />}></Route>

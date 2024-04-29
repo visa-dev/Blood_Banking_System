@@ -77,9 +77,9 @@ const Header = (props) => {
                         <Stack >
                             <Button variant="outlined" color='error' component={Link} to="/login">Login</Button>
                         </Stack>
-                        <Stack >
+                        {/* <Stack >
                             <Button variant="outlined" color='error' component={Link} to="/admin/login">Admin</Button>
-                        </Stack>
+                        </Stack> */}
                     </div>
                     )
                 }

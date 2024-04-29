@@ -42,9 +42,11 @@ const Login = () => {
         await axiosPost('donor/login', { email: email, password: password })
           .then((data) => {
 
-            if ([data.data][0].success === true) {
+            if ([data.data][0].success === true &&[data.data][0].role=== 'donor' ) {
               navigate(`/profile?id=${encodeURIComponent([data.data][0].id)}`);
-            } else {
+            } else if([data.data][0].success === true &&[data.data][0].role=== 'admin' ) {
+              navigate(`/admin/profile?id=${encodeURIComponent([data.data][0].id)}`);
+            }else{
               alert([data.data][0].message);
             }
           }

@@ -1,5 +1,5 @@
 import Donor from "../models/Donor.js";
-
+import AdminData from "../models/AdminData.js";
 import Notification from "../models/Notification.js";
 import Otp from "../models/Otp.js";
 import Reports from "../models/Reports.js";
@@ -108,7 +108,7 @@ export const registerVerifyOtp = async (req, res) => {
         const validOtp = await bcrypt.compare(otp, hashedOtp);
 
         if (validOtp) {
-           
+
             await Donor.updateOne({ email }, { verified: true });
             await Otp.deleteMany({ email });
             // console.log("OTP MATCHED");
@@ -205,7 +205,7 @@ export const getDonors = async (req, res) => {
 
 export const getDonorsByProvince = async (req, res) => {
     try {
-        const filter = { bloodgroup: req.params.blood, province: req.params.province}
+        const filter = { bloodgroup: req.params.blood, province: req.params.province }
         const donors = await Donor.find(filter);
 
         res.status(200).json(donors);
@@ -232,19 +232,29 @@ export const login = async (req, res) => {
         const donorprofile = await Donor.findOne({ email: email });
 
 
+
+
         if (donorprofile != null) {
 
             const password = donorprofile.password;
             const profile_validate = await bcrypt.compare(req.body.password, password) & donorprofile.verified == true;
 
             if (profile_validate) {
-                res.status(200).json({ success: true, id: donorprofile._id });
+                res.status(200).json({ success: true, id: donorprofile._id ,role:'donor'});
             } else {
                 res.status(201).json({ success: false, message: "Password not match" });
             }
         } else {
+            const adminprofile = await AdminData.findOne({ email: email });
+            const password = adminprofile.password;
+            const profile_validate = await bcrypt.compare(req.body.password, password);
 
-            res.status(201).json({ success: false, message: `${email} No Account found` });
+            if (profile_validate) {
+                res.status(200).json({ success: true, id: adminprofile._id ,role:'admin'});
+            } else {
+                res.status(201).json({ success: false, message: "Password not match" });
+            }
+            
         }
     } catch (error) {
         // console.error('Error:', error.message);
@@ -343,7 +353,7 @@ export const deleteDonor = async (req, res) => {
 
         await Reports.findOneAndDelete({ email });
         const deletedDonor = await Donor.findOneAndDelete({ email });
-        
+
         if (deletedDonor) {
             res.status(200).json({ message: 'Donor deleted successfully' });
         } else {
