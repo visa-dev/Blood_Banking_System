@@ -16,7 +16,7 @@ import Stack from '@mui/material/Stack';
 const AdminDashboard = () => {
 
 
-  
+    const [profile, setProfile] = useState('');
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -24,9 +24,9 @@ const AdminDashboard = () => {
 
     useEffect(() => {
 
-        axiosGet(`donor/byid/${id}`)
+        axiosGet(`admin/byid/${id}`).then(data => setProfile(data.data))
 
-          
+
             .catch(error => {
 
                 console.error('Error fetching data:', error);
@@ -68,9 +68,16 @@ const AdminDashboard = () => {
                 </div>
             </div>
 
-            <div>
-                <h1 className='flex w-full items-center justify-center h-[500px]'>I Need To Devlope</h1>
+            <div className='flex justify-center items-center text-[28px] font-bold w-full h-[500px] bg-slate-300'>
+
+                <div>
+                    <span className='cardData text-[26px]' > {profile.username}</span>
+                    <span className='cardData text-[26px]'>{profile.email}</span>
+                   
+                </div>
+
             </div>
+
 
             {/* <div className='flex justify-center items-center text-[28px] font-bold w-full h-[500px] bg-slate-300'>
 

@@ -11,7 +11,7 @@ import { navLinks } from '../../assets/data/HeaderData';
 import { socialLinks, contactData } from '../../assets/data/FooterData';
 
 import Footer from '../../components/common/Footer';
-
+import Province from '../../assets/data/SelectData';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -24,14 +24,46 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
+import { useState } from 'react';
 import { axiosGet } from '../../AxiosOperations';
 
-import Spinner1 from '../../pages/spinners/Spinner1';
+
 
 const Home = () => {
 
-  const [bloodCount, setBloodCount] = React.useState([]);
+  const [bloodCount, setBloodCount] = useState([]);
+  const [donorList, setDonorList] = useState([]);
+  const [verifyuser, setVerifyUser] = useState(false);
+  // const location = useLocation();
+  // const searchParams = new URLSearchParams(location.search);
+  // const verify = searchParams.get("verify");
+  // const requesterData = searchParams.get("data");
+  // var decodedFormData = JSON.parse(requesterData);
+
+  const [formData, setFormData] = useState({
+    bloodgroup: 'Select',
+    province: 'Select',
+
+  });
+
+  const bloodbankCheck = () => {
+    try {
+      axiosGet(`home/bloodbank/availability/${formData.bloodgroup}`).then((data) => {
+        if (formData.district == "Vavuniya" & data.data.available & verifyuser) {
+          setAvailable(true);
+        } else {
+          setAvailable(false);
+        }
+
+      });
+
+
+    } catch (error) {
+
+    }
+
+  }
+
 
   useEffect(() => {
 
@@ -52,6 +84,25 @@ const Home = () => {
       // Cleanup code goes here
     };
   }, []);
+  
+    const getDonorsList = async () => {
+    if (formData.province!='Select' && formData.bloodgroup!='Select') {
+      await axiosGet(`donor/finddonor/${formData.bloodgroup}/${formData.province}`)
+        .then(data => {
+          bloodbankCheck();
+          setDonorList(data.data);
+          console.log(data.data);
+        }).then(setInterval(() => {
+          setLoading(false);
+        }, 500))
+        .then(() => {
+          // Show chat after fetching donor list
+          setChatVisible(true);
+        });
+    }else{
+      alert("Select All Feilds");
+    }
+  };
 
   return (
     <div>
@@ -84,9 +135,16 @@ const Home = () => {
                     label="Select Blood"
 
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={10}>A-</MenuItem>
+                    <MenuItem value={20}>A+</MenuItem>
+                    <MenuItem value={30}>AB-</MenuItem>
+                    <MenuItem value={30}>AB+</MenuItem>
+                    <MenuItem value={30}>B-</MenuItem>
+                    <MenuItem value={30}>B-</MenuItem>
+                    <MenuItem value={30}>B+</MenuItem>
+                    <MenuItem value={30}>O-</MenuItem>
+                    <MenuItem value={30}>O+</MenuItem>
+
                   </Select>
                 </FormControl>
               </Box>
@@ -94,22 +152,25 @@ const Home = () => {
             <div className='mt-[20px]'>
               <Box sx={{ minWidth: 220 }}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Select Region</InputLabel>
+                  <InputLabel id="demo-simple-select-label">Select Province</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-
-                    label="Select Region"
+                   
+                    label="Select Province"
 
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {
+                      Province.map((province) => (
+                        <MenuItem value={province.name}>{province.name}</MenuItem>
+
+                      ))
+                    }
                   </Select>
                 </FormControl>
               </Box>
             </div>
-            <div className='mt-[20px]'>
+            {/* <div className='mt-[20px]'>
               <Box sx={{ minWidth: 220 }}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">Select District</InputLabel>
@@ -120,20 +181,26 @@ const Home = () => {
                     label="Select District"
 
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {
+                      districts.map((district) => (
+                        <MenuItem value={district.name}>{district.name}</MenuItem>
+
+                      ))
+                    }
                   </Select>
                 </FormControl>
               </Box>
-            </div>
+            </div> */}
             <div className='flex justify-center mt-[20px]'>
               <Stack direction="row" spacing={2}>
-                <Button variant="outlined" color="error">Find Blood</Button>
+                <Button variant="outlined" color="error" onClick={getDonorsList}>Find Blood</Button>
               </Stack>
             </div>
           </form>
         </div>
+      </div>
+      <div>
+        cxx
       </div>
       <div className='w-[100] h-[400px]  mt-[50px] m-[10px] flex justify-center bg-orange-400'>
 

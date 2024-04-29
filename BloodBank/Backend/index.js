@@ -7,7 +7,7 @@ import DonorRoutes from './routes/DonorRoutes.js';
 import BloodRoutes from './routes/BloodRequestRoutes.js';
 import CommonRoutes from './routes/CommonRoutes.js';
 import ReportRoutes from './routes/ReportsRoutes.js';
-
+import AdminRoutes from './routes/AdminRoutes.js';
 
 const app = express();
 
@@ -22,6 +22,7 @@ app.use('/donor', DonorRoutes);
 app.use('/finder', BloodRoutes);
 app.use('/home', CommonRoutes);
 app.use('/report', ReportRoutes);
+app.use('/admin', AdminRoutes);
 
 
 const connectDB = async () => {

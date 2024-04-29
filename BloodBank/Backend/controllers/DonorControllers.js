@@ -1,4 +1,5 @@
 import Donor from "../models/Donor.js";
+
 import Notification from "../models/Notification.js";
 import Otp from "../models/Otp.js";
 import Reports from "../models/Reports.js";
@@ -202,6 +203,18 @@ export const getDonors = async (req, res) => {
     }
 }
 
+export const getDonorsByProvince = async (req, res) => {
+    try {
+        const filter = { bloodgroup: req.params.blood, province: req.params.province}
+        const donors = await Donor.find(filter);
+
+        res.status(200).json(donors);
+    } catch (error) {
+        // console.error('Error:', error.message);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+}
+
 export const getAllDonors = async (req, res) => {
     try {
         const donors = await Donor.find();
@@ -238,6 +251,8 @@ export const login = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 }
+
+
 
 export const findById = async (req, res) => {
     try {

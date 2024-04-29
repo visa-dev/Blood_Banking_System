@@ -1,5 +1,5 @@
 import express from "express";
-import { createDonor, getDonors, login, findById, getNotifications, setNotifications, getAllDonors, registerCreateOtp, registerVerifyOtp, setEmail, blodRequestCreateOtp, bloodRequestVerifyOtp, deleteDonor } from '../controllers/DonorControllers.js';
+import { createDonor, getDonors, login, findById, getNotifications, setNotifications, getAllDonors, registerCreateOtp, registerVerifyOtp, setEmail, blodRequestCreateOtp, bloodRequestVerifyOtp, deleteDonor,getDonorsByProvince } from '../controllers/DonorControllers.js';
 
 
 const router = express.Router();
@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post('/register', createDonor);
 router.get('/finddonor/:blood/:province/:district', getDonors);
+router.get('/finddonor/:blood/:province', getDonorsByProvince);
 router.post('/login', login);
 router.get('/byid/:id', findById);
 router.get('/alldonors', getAllDonors);
