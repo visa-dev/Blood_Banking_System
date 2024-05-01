@@ -203,17 +203,7 @@ export const getDonors = async (req, res) => {
     }
 }
 
-export const getDonorsByProvince = async (req, res) => {
-    try {
-        const filter = { bloodgroup: req.params.blood, province: req.params.province }
-        const donors = await Donor.find(filter);
 
-        res.status(200).json(donors);
-    } catch (error) {
-        // console.error('Error:', error.message);
-        res.status(500).json({ success: false, message: 'Server error' });
-    }
-}
 
 export const getAllDonors = async (req, res) => {
     try {

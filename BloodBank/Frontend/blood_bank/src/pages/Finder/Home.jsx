@@ -16,15 +16,19 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { axiosGet } from '../../AxiosOperations';
 import testImg from '/user.png';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Home = () => {
   const [bloodCount, setBloodCount] = useState([]);
-  const [donorList, setDonorList] = useState([]);
-  const [visible, setVisible] = useState(false);
+  const [district, setDistrict] = useState([]);
+
+  const navigetor = useNavigate();
   const [formData, setFormData] = useState({
     bloodgroup: 'Select',
     province: 'Select',
+    district: 'Select'
   });
 
   const handleBloodGroupChange = (event) => {
@@ -34,23 +38,24 @@ const Home = () => {
   const handleProvinceChange = (event) => {
     setFormData({ ...formData, province: event.target.value });
   };
-
-  const getDonorsList = async () => {
-    setVisible(true);
-    if (formData.province !== 'Select' && formData.bloodgroup !== 'Select') {
-      try {
-        const data = await axiosGet(`donor/finddonor/${formData.bloodgroup}/${formData.province}`);
-        setDonorList(data.data);
-        console.log(data.data);
-      } catch (error) {
-        console.error('Error fetching donor list:', error);
-      }
-    } else {
-      alert('Please select both blood group and province');
-    }
+  const handleDistrictChange = (event) => {
+    setFormData({ ...formData, district: event.target.value });
   };
+  const getDistricts = () => {
+
+    Province.map((pro) => {
+      if (pro.name == formData.province) {
+        setDistrict(pro.districts);
+      }
+    })
+
+
+  }
+
+
 
   useEffect(() => {
+    
     axiosGet('home/count')
       .then((data) => {
         setBloodCount(data.data);
@@ -58,7 +63,12 @@ const Home = () => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, []);
+  },);
+
+  useEffect(() => {
+    getDistricts();
+  }, );
+
 
   return (
     <div>
@@ -123,9 +133,36 @@ const Home = () => {
                 </FormControl>
               </Box>
             </div>
+            <div className='mt-[20px]'>
+              <Box sx={{ minWidth: 220 }}>
+                <FormControl fullWidth>
+                  <InputLabel id='district-label'>Select District</InputLabel>
+                  <Select
+                    labelId='district-label'
+                    id='district-select'
+                    value={formData.district}
+                    label='Select District'
+                    onChange={handleDistrictChange}
+                  >
+                    <MenuItem value='Select'>Select</MenuItem>
+                    {district.map((dis) => (
+                      <MenuItem key={dis} value={dis}>
+                        {dis}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
+            </div>
             <div className='flex justify-center mt-[20px]'>
               <Stack direction='row' spacing={2}>
-                <Button variant='outlined' color='error' onClick={getDonorsList}>
+                <Button variant='outlined' color='error' onClick={() => {
+                  if (formData.bloodgroup != 'Select' && formData.province != 'Select') {
+                    navigetor(`/search?data=${encodeURIComponent(JSON.stringify(formData))}`)
+                  } else {
+                    alert("Please Select All Feilds");
+                  }
+                }}>
                   Find Blood
                 </Button>
               </Stack>
@@ -134,37 +171,7 @@ const Home = () => {
         </div>
       </div>
       <div>
-        {visible && (
-          <div>
-            {/* {donorList.length > 0 && (
-              <center className='text-[26px] homepara text-red-400 underline'>Your blood is available at our blood bank. You can collect or contact these donors.</center>
-            )} */}
-            {donorList.length !== 0 ? (
-              <div className='grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-4'>
-                {donorList.map((item) => (
-                  <div className='flex justify-center p-[20px]' key={item._id}>
-                    <div className='xl:w-[500px] lg:w-[500px] md:w-[500px] h-[300px] border-2 bg-slate-200'>
-                      <div className='flex justify-around'>
-                        <div className='w-[200px] h-[200px] mt-[20px]'><span><img src={testImg} alt="" /></span></div>
-                        <div className='w-[200px] h-[200px] mt-[40px]'>
-                          <div>
-                            <span key='1' className='cardData text-[24px] font-bold'>{item.fullname}</span>
-                            <i className="fa-solid fa-phone"></i><span key='2' className='cardData'>{item.mobile}</span>
-                            <i className="fa-solid fa-location-dot"></i><span key='3' className='cardData'>{item.district} , {item.province}.</span>
-                            <i className="fa-regular fa-calendar"></i><span key='5' className='cardData'>Last Donation : {item.lastdonationdate}</span>
-                          </div>
-                        </div>
-                      </div>
 
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className='flex justify-center w-full/2 h-[500px] items-center bg-slate-200 m-[20px] homepara'>No Available Donor/Not Select All Fields</div>
-            )}
-          </div>
-        )}
       </div>
       <div className='w-[100] h-[400px] mt-[50px] m-[10px] flex justify-center bg-orange-400'>
         <div className='w-[600px] p-[30px]'>

@@ -25,6 +25,7 @@ import BloodRequestOtpReceive from './auth/BloodRequestOtpReceive';
 import Report from './pages/Admin/Reports'
 
 import CreateAdmin from './pages/Admin/CreateAdmin';
+import SearchDonor from './pages/Finder/SearchDonor';
 
 
 function App() {
@@ -41,7 +42,7 @@ function App() {
         <Route path='/news' element={<News />}></Route>
         <Route path='/contact' element={<Contact />}></Route>
         <Route path='/register' element={<Register />}></Route>
-
+        <Route path='/search' element={<SearchDonor />}></Route>
         <Route path='/register/otpsend' element={<RegisterOtpSend />}></Route>
         <Route path='/register/otpreceive' element={<RegisterOtpReceive />}></Route>
 
